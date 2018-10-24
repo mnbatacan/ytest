@@ -1,0 +1,8 @@
+{
+    "name": "me/me",
+    "type": "project",
+    "require": {
+        "google/apiclient": "~2.0"
+    },
+    "minimum-stability": "dev"
+}
