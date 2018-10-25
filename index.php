@@ -1,5 +1,5 @@
 <?php
-
+header("Access-Control-Allow-Origin: *");
 /**
  * This sample creates and manages comments by:
  *
@@ -29,7 +29,7 @@ if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
 require_once __DIR__ . '/vendor/autoload.php';
 session_start();
 
-
+$name=$_GET['name'];
 /*
  * You can acquire an OAuth 2.0 client ID and client secret from the
  * {{ Google Cloud Console }} <{{ https://cloud.google.com/console }}>
@@ -43,7 +43,7 @@ $OAUTH2_CLIENT_SECRET = 'nuzTmgbCATp0XBBeUhNXVc-4';
 /* You can replace $VIDEO_ID with one of your videos' id, and text with the
  *  comment you want to be added.
  */
-$VIDEO_ID = 'LcusVg5G6zU';
+$VIDEO_ID = 'qw2lI2yG-ac';
 $TEXT = 'Hows the weather were having?';
 
 $client = new Google_Client();
@@ -87,16 +87,16 @@ if ($client->getAccessToken()) {
         'textFormat' => 'plainText',
     ));
     if (empty($videoComments)) {
-      $htmlBody .= "<h3>Can\'t get video comments.</h3>";
+      // $htmlBody .= "<h3>Can\'t get video comments.</h3>";
     } else {
       // $videoComments[0]['snippet']['topLevelComment']['snippet']['textOriginal'] = 'updated';
       // // $videoCommentUpdateResponse = $youtube->commentThreads->update('snippet', $videoComments[0]);
     }
 
-    $htmlBody .= "<h3>Video Comments</h3><ul>";
+    // $htmlBody .= "<h3>Video Comments</h3><ul>";
     foreach ($videoComments as $comment) {
-      if (strpos($comment['snippet']['topLevelComment']['snippet']['textOriginal'], 'sucks') == false) {
-        $htmlBody .= sprintf('<li>%s</li>', $comment['snippet']['topLevelComment']['snippet']['textOriginal']);
+      if (strpos($comment['snippet']['topLevelComment']['snippet']['textOriginal'], 'love') == false) {
+        // $htmlBody .= sprintf('<li>%s</li>', $comment['snippet']['topLevelComment']['snippet']['textOriginal']);
       }else{
         $youtube->comments->setModerationStatus($comment['id'], 'heldForReview');
       }
@@ -105,20 +105,20 @@ if ($client->getAccessToken()) {
 
     $htmlBody .= '</ul>';
   } catch (Google_Service_Exception $e) {
-    $htmlBody .= sprintf('<p>A service error occurred: <code>%s</code></p>',
-        htmlspecialchars($e->getMessage()));
+    // $htmlBody .= sprintf('<p>A service error occurred: <code>%s</code></p>',
+    //     htmlspecialchars($e->getMessage()));
   } catch (Google_Exception $e) {
-    $htmlBody .= sprintf('<p>An client error occurred: <code>%s</code></p>',
-        htmlspecialchars($e->getMessage()));
+    // $htmlBody .= sprintf('<p>An client error occurred: <code>%s</code></p>',
+    //     htmlspecialchars($e->getMessage()));
   }
   $_SESSION[$tokenSessionKey] = $client->getAccessToken();
 } elseif ($OAUTH2_CLIENT_ID == 'REPLACE_ME') {
-  $htmlBody = <<<END
-  <h3>Client Credentials Required</h3>
-  <p>
-    You need to set <code>\$OAUTH2_CLIENT_ID</code> and
-    <code>\$OAUTH2_CLIENT_ID</code> before proceeding.
-  <p>
+  // $htmlBody = <<<END
+  // <h3>Client Credentials Required</h3>
+  // <p>
+  //   You need to set <code>\$OAUTH2_CLIENT_ID</code> and
+  //   <code>\$OAUTH2_CLIENT_ID</code> before proceeding.
+  // <p>
 END;
 } else {
   // If the user hasn't authorized the app, initiate the OAuth flow
@@ -126,14 +126,16 @@ END;
   $client->setState($state);
   $_SESSION['state'] = $state;
   $authUrl = $client->createAuthUrl();
-  $htmlBody = <<<END
-  <h3>Authorization Required</h3>
-  <p>You need to <a href="$authUrl">authorize access</a> before proceeding.<p>
+  // $htmlBody = <<<END
+  // <h3>Authorization Required</h3>
+  // <p>You need to <a href="$authUrl">authorize access</a> before proceeding.<p>
 END;
 }
+$name=$_GET['name'];
+echo $name;
 ?>
 
-<!doctype html>
+<!-- <!doctype html>
 <html>
 <head>
 <title>Insert, list and update top-level comments</title>
@@ -141,4 +143,4 @@ END;
 <body>
   <?=$htmlBody?>
 </body>
-</html>
+</html> -->
