@@ -38,7 +38,7 @@ $name=$_GET['name'];
  * Please ensure that you have enabled the YouTube Data API for your project.
  */
 $OAUTH2_CLIENT_ID = '440105667802-ch5vnauuq9opn0kltvedtru8vbohp586.apps.googleusercontent.com';
-$OAUTH2_CLIENT_SECRET = 'nuzTmgbCATp0XBBeUhNXVc-4';
+$OAUTH2_CLIENT_SECRET = 'km5jCP6kLpHcLucQ9O54BQs_';
 
 /* You can replace $VIDEO_ID with one of your videos' id, and text with the
  *  comment you want to be added.
@@ -59,7 +59,7 @@ $redirect = filter_var('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'],
     FILTER_SANITIZE_URL);
 $client->setRedirectUri($redirect);
 
-$client->RefreshToken('1/svxOHPtl9rJQMnqq9VWVYCPIlxwaXKwyEEQr0VTr0GE');
+$client->RefreshToken('1/01CZHPeMuy8PMgCUAhRApjSTVp4Dpm4xoHvxgMxoIFU');
 
 // Define an object that will be used to make all API requests.
 $youtube = new Google_Service_YouTube($client);
@@ -95,7 +95,7 @@ if ($client->getAccessToken()) {
 
     // $htmlBody .= "<h3>Video Comments</h3><ul>";
     foreach ($videoComments as $comment) {
-      if (strpos($comment['snippet']['topLevelComment']['snippet']['textOriginal'], 'love') == false) {
+      if (strpos($comment['snippet']['topLevelComment']['snippet']['textOriginal'], 'sucks') == false) {
         // $htmlBody .= sprintf('<li>%s</li>', $comment['snippet']['topLevelComment']['snippet']['textOriginal']);
       }else{
         $youtube->comments->setModerationStatus($comment['id'], 'heldForReview');
@@ -103,15 +103,16 @@ if ($client->getAccessToken()) {
       
     }
 
-    $htmlBody .= '</ul>';
+    // $htmlBody .= '</ul>';
   } catch (Google_Service_Exception $e) {
     // $htmlBody .= sprintf('<p>A service error occurred: <code>%s</code></p>',
-    //     htmlspecialchars($e->getMessage()));
+        // htmlspecialchars($e->getMessage()));
   } catch (Google_Exception $e) {
     // $htmlBody .= sprintf('<p>An client error occurred: <code>%s</code></p>',
     //     htmlspecialchars($e->getMessage()));
   }
   $_SESSION[$tokenSessionKey] = $client->getAccessToken();
+  echo("okay");
 } elseif ($OAUTH2_CLIENT_ID == 'REPLACE_ME') {
   // $htmlBody = <<<END
   // <h3>Client Credentials Required</h3>
@@ -119,6 +120,7 @@ if ($client->getAccessToken()) {
   //   You need to set <code>\$OAUTH2_CLIENT_ID</code> and
   //   <code>\$OAUTH2_CLIENT_ID</code> before proceeding.
   // <p>
+  echo("ouath");
 END;
 } else {
   // If the user hasn't authorized the app, initiate the OAuth flow
@@ -126,21 +128,12 @@ END;
   $client->setState($state);
   $_SESSION['state'] = $state;
   $authUrl = $client->createAuthUrl();
+  echo $authUrl;
+
   // $htmlBody = <<<END
   // <h3>Authorization Required</h3>
   // <p>You need to <a href="$authUrl">authorize access</a> before proceeding.<p>
 END;
 }
-$name=$_GET['name'];
-echo $name;
 ?>
 
-<!-- <!doctype html>
-<html>
-<head>
-<title>Insert, list and update top-level comments</title>
-</head>
-<body>
-  <?=$htmlBody?>
-</body>
-</html> -->
